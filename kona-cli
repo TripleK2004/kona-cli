@@ -3,13 +3,13 @@
 get_new(){
 
 last_id=$(cat ~/.cache/konachan)
-latest_id=$(curl -s 'https://konachan.com/post.json' | jq '.[1].id')
+latest_id=$(curl -s 'https://konachan.com/post.json' | jq '.[0].id')
   
 if [ "$latest_id" -ne "$last_id" ]
 then
 
     json_data=$(curl -s 'https://konachan.com/post.json' | jq '.[]' | sed -n "/\"id\": $(printf '%s' "$last_id")/q;p" | sed '$d')
-    curl -s 'https://konachan.com/post.json' | jq '.[1].id' > ~/.cache/konachan &
+    curl -s 'https://konachan.com/post.json' | jq '.[0].id' > ~/.cache/konachan &
 
     main "$json_data"
 
