@@ -1,0 +1,97 @@
+#!/bin/ksh
+
+get_new(){
+
+last_id=$(cat ~/.cache/konachan)
+latest_id=$(curl -s 'https://konachan.com/post.json' | jq '.[1].id')
+  
+if [ "$latest_id" -ne "$last_id" ]
+then
+
+    json_data=$(curl -s 'https://konachan.com/post.json' | jq '.[]' | sed -n "/\"id\": $(printf '%s' "$last_id")/q;p" | sed '$d')
+    curl -s 'https://konachan.com/post.json' | jq '.[1].id' > ~/.cache/konachan &
+
+    main "$json_data"
+
+else
+    printf '\n\x1B[31m%s\x1B[0m\n' "No new wallpapers have been uploaded"
+fi
+
+}
+
+search(){
+
+if [ -n "$1" ] && [ -n "$2" ]
+then
+    
+    tag_list=$(curl -s "https://konachan.com/tag.json?limit=10" -d "order=count" -d "name=$2" | jq '.[].name' | tr -d '"')
+
+    PS3=$(printf '\n\x1B[31m%s\x1B[0m\n' "Choose your mood: ")
+    export PS3
+    select choice in $tag_list
+    do
+	json_data=$(curl -s "https://konachan.com/post.json?limit=$1" -d "tags=$choice" | jq | sed -e '1d;$d' -e 's/\},/\}/g')
+      	break
+    done
+
+    main "$json_data"
+
+else
+    printf '\n\x1B[31m%s\x1B[0m\n' "Search string or number of wallpapers was not given, try again"
+fi
+
+}
+
+main(){
+
+sample_urls=$(printf '%s' "$1" | jq '.sample_url' | tr -d '"')
+    
+printf '\n\x1B[34m%s\x1B[0m\n' "Downloading sample wallpapers..."
+
+[ ! -d /tmp/konachan ] && mkdir -p /tmp/konachan
+for sample_url in $(printf '%s' "$sample_urls")
+do
+    curl -so /tmp/konachan/"$(printf '%s' "$sample_url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')" "$sample_url"
+done
+
+# shellcheck disable=SC2046
+dl_list=$(sxiv -s F -to /tmp/konachan | sed -nE 's/(.*)([0-9]{6})(.*)/\2/p')
+
+if [ -n "$dl_list" ]
+then
+
+    for selected in $(printf '%s' "$dl_list")
+    do
+      
+	urls=$(printf '%s' "$1" | jq ". | select( .id == $selected ).jpeg_url" | tr -d '"')
+    
+      	for url in $(printf '%s' "$urls")
+      	do
+	    curl -so ~/MEGA/wallhaven/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+      	done
+    
+    done
+
+    printf '\n\x1B[32m%s\x1B[0m\n' "Wallpapers have been downloaded"
+
+else
+    printf '\n\x1B[31m%s\x1B[0m\n' "No wallpaper was selected"
+fi
+
+rm /tmp/konachan/* &> /dev/null
+
+}
+
+case $1 in
+    gn|get_new ) get_new ;;
+    se|search ) search "$2" "$3" ;;
+     * ) printf '%s\n' "
+Usage: mv [gn|se [X] [Y]]
+
+    gn, get_new     downloads newly uploaded wallpapers
+
+    se, search      searches for Y(string) tag and gives you 10 related tags 
+		    sorted by posts count in descending order to choose from 
+		    and downloads X(unsigned non-zero integer) number of latest 
+		    wallpapers belonging to the tag you chose" ;;
+esac
