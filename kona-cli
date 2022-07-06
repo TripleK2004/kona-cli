@@ -26,7 +26,7 @@ then
     
     tag_list=$(curl -s "https://konachan.com/tag.json?limit=10" -d "order=count" -d "name=$2" | jq '.[].name' | tr -d '"')
 
-    PS3=$(printf '\n\x1B[31m%s\x1B[0m\n' "Choose your mood: ")
+    PS3=$(printf '\n\x1B[34m%s\x1B[0m\n' "Choose your mood: ")
     export PS3
     select choice in $tag_list
     do
