@@ -34,7 +34,12 @@ then
       	break
     done
 
-    main "$json_data"
+    if [ -n "$json_data" ]
+    then
+	main "$json_data"
+    else
+	printf '\n\x1B[31m%s\x1B[0m\n' "The selected tag does not have wallpapers"
+    fi
 
 else
     printf '\n\x1B[31m%s\x1B[0m\n' "Search string or number of wallpapers was not given, try again"
