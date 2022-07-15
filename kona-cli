@@ -25,7 +25,7 @@ if [ -n "$1" ]
 then
 
     url=$(curl -s "https://konachan.com/post/show/$1" | sed -nE '/class="highres-show"/s/(.*)href="(.*)"(.*)/\2/p')
-    curl -so ~/MEGA/wallhaven/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+    curl -so ${XDG_DATA_HOME:-~/.local/share}/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
 
     printf '\n\x1B[32m%s\x1B[0m\n' "Wallpaper $1 has been downloaded"
 
@@ -88,7 +88,7 @@ then
     
       	for url in $(printf '%s' "$urls")
       	do
-	    curl -so ~/MEGA/wallhaven/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+	    curl -so ${XDG_DATA_HOME:-~/.local/share}/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
       	done
     
     done

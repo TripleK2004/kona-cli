@@ -18,6 +18,7 @@ Usage: ```kona-cli se 5 yae_miko``` se for "search"
 
 The first field takes number of sample wallpapers to view. The second field takes search string. Moebooru API, on which Konachan is based on uses underscore `(_)` separated names for tags with whitespaces. So better use underscores instead of whitespaces as shown in the example.
 
+The wallpapers are downloaded to `$XDG_DATA_HOME/backgrounds` or `$HOME/.local/share/backgrounds`.
 
 ## Why Konachan ?
 
