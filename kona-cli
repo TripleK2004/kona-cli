@@ -19,6 +19,22 @@ fi
 
 }
 
+get_id(){
+
+if [ -n "$1" ]
+then
+
+    url=$(curl -s "https://konachan.com/post/show/$1" | sed -nE '/class="highres-show"/s/(.*)href="(.*)"(.*)/\2/p')
+    curl -so ~/MEGA/wallhaven/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+
+    printf '\n\x1B[32m%s\x1B[0m\n' "Wallpaper $1 has been downloaded"
+
+else
+    printf '\n\x1B[31m%s\x1B[0m\n' "No id number was given, try again"
+fi
+
+}
+
 search(){
 
 if [ -n "$1" ] && [ -n "$2" ]
@@ -89,14 +105,18 @@ rm /tmp/konachan/* &> /dev/null
 
 case $1 in
     gn|get_new ) get_new ;;
+    id|get_id ) get_id "$2" ;;
     se|search ) search "$2" "$3" ;;
      * ) printf '%s\n' "
-Usage: mv [gn|se [X] [Y]]
+Usage: mv [gn|id [X]|se [Y] [Z]]
 
     gn, get_new     downloads newly uploaded wallpapers
 
-    se, search      searches for Y(string) tag and gives you 10 related tags 
+    id, get_id	    downloads the high res jpeg image of the given X(6 digit 
+		    unsigned integer)
+
+    se, search      searches for Z(string) tag and gives you 10 related tags 
 		    sorted by posts count in descending order to choose from 
-		    and downloads X(unsigned non-zero integer) number of latest 
+		    and downloads Y(unsigned non-zero integer) number of latest 
 		    wallpapers belonging to the tag you chose" ;;
 esac

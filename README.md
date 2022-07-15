@@ -2,14 +2,17 @@
 
 This is a simple UNIX Shell Script (runs on korn shell), which uses the [Konachan API](https://konachan.com/help/api) to download wallpapers from the Konachan databse. Downloads sample wallpapers first and then downloads the full wallpaper in jpeg format to save bandwidth.
 
-It has two main functionality:
+It has three main functionality:
 
 1. Grab the latest posts. When ran for the first time downloads latest 21 posts (according to the api documentation). Once the latest wallpaper id has been cached, only newly uploaded wallpapers will be downloaded later on.
 
 Usage: ```kona-cli gn``` gn for "get new"
 
+2. Download the higher resolution jpeg image of the given 6 digit id. No sample image will be downloaded. Makes sense since you made the choice :)
 
-2. Download wallpapers based on query tags.
+Usage: ```kona-cli id  308134```
+
+3. Download wallpapers based on query tags.
 
 Usage: ```kona-cli se 5 yae_miko``` se for "search"
 
