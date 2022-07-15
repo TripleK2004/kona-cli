@@ -37,4 +37,7 @@ Konachan focuses on desktop anime wallpapers rather than other image boards (Dan
 
 * [CoolnsX](https://github.com/CoolnsX)
     1. pointed out recurring code
-    2. forking curl id caching (line 12) into background improves speed
+    2. forking curl id caching into background improves speed
+
+* [justchokingaround](https://github.com/justchokingaround)
+    1. changes taken from the [commit](https://github.com/justchokingaround/kona-cli/commit/0c1ecca0480679fb054cb59d32ea25e6f8fc4a7d), removed redundant curling of latest id
