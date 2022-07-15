@@ -76,7 +76,7 @@ do
 done
 
 # shellcheck disable=SC2046
-dl_list=$(sxiv -s F -to /tmp/konachan | sed -nE 's/(.*)([0-9]{6})(.*)/\2/p')
+dl_list=$(sxiv -to /tmp/konachan | sed -nE 's/(.*)([0-9]{6})(.*)/\2/p')
 
 if [ -n "$dl_list" ]
 then
