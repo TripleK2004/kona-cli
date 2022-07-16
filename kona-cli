@@ -3,12 +3,12 @@
 get_new(){
 
 last_id=$(cat ~/.cache/konachan 2> /dev/null || curl -s "https://konachan.com/post.json" -d "page=2" | jq '.[].id' | head -n 1)
-latest_id=$(curl -s 'https://konachan.com/post.json' | jq '.[0].id')
+latest_id=$(curl -s "https://konachan.com/post.json" | jq '.[0].id')
   
 if [ "$latest_id" -ne "$last_id" ]
 then
 
-    json_data=$(curl -s 'https://konachan.com/post.json' -d 'limit=1000' | jq '.[]' | sed -n "/\"id\": $(printf '%s' "$last_id")/q;p" | sed '${/{/d;}')
+    json_data=$(curl -s "https://konachan.com/post.json" -d 'limit=1000' | jq '.[]' | sed -n "/\"id\": $(printf '%s' "$last_id")/q;p" | sed '${/{/d;}')
     printf '%s' "$latest_id" > ~/.cache/konachan &
 
     main "$json_data"
@@ -25,7 +25,7 @@ if [ -n "$1" ]
 then
 
     url=$(curl -s "https://konachan.com/post/show/$1" | sed -nE '/class="highres-show"/s/(.*)href="(.*)"(.*)/\2/p')
-    curl --create-dirs -so ${XDG_DATA_HOME:-~/.local/share}/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+    curl --create-dirs -so "${XDG_DATA_HOME:-~/.local/share}"/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
 
     printf '\n\x1B[32m%s\x1B[0m\n' "Wallpaper $1 has been downloaded"
 
@@ -87,7 +87,7 @@ then
     
       	for url in $(printf '%s' "$urls")
       	do
-	    curl --create-dirs -so ${XDG_DATA_HOME:-~/.local/share}/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
+	    curl --create-dirs -so "${XDG_DATA_HOME:-~/.local/share}"/backgrounds/"$(printf '%s' "$url" | sed -nE 's/(.*)%20([0-9]{6})%20(.*)/\2/p')".jpg "$url"
       	done
     
     done
