@@ -4,7 +4,7 @@ This is a simple UNIX Shell Script (runs on korn shell), which uses the [Konacha
 
 It has three main functionality:
 
-1. Grab the latest posts. When ran for the first time downloads latest 21 posts. Once the latest wallpaper id has been cached, only newly uploaded wallpapers will be downloaded later on.
+1. Grab the latest posts. When ran for the first time downloads latest 21 posts or 1 page. Once the latest wallpaper id has been cached, only newly uploaded wallpapers will be downloaded later on.
 
 Usage: ```kona-cli gn``` gn for "get new"
 
