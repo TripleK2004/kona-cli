@@ -41,3 +41,4 @@ Konachan focuses on desktop anime wallpapers rather than other image boards (Dan
 
 * [justchokingaround](https://github.com/justchokingaround)
     1. changes taken from the [commit](https://github.com/justchokingaround/kona-cli/commit/0c1ecca0480679fb054cb59d32ea25e6f8fc4a7d), removed redundant curling of latest id
+    2. sed condition check #10, doesn't manipulate the json data when a full json is recieved
